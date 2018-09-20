@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigInteger;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -19,6 +20,16 @@ public class Brain {
 
 		String formattedTime = currTime.format(timeFormat);
 		return formattedTime;
+	}
+
+	public String doPrime(int digits) {
+		int bitsToDec = (int) (BITS_PER_DIGIT * digits);
+
+		BigInteger bigPrime = BigInteger.probablePrime(bitsToDec, new Random());
+		long primeNum = bigPrime.longValue();
+		String prime = Long.toString(primeNum);
+
+		return prime;
 	}
 
 }
