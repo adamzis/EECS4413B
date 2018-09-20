@@ -13,16 +13,12 @@ public class Brain {
 	public static final String HTTP_URL = "https://www.eecs.yorku.ca/~roumani/servers/4413/f18/World.cgi";
 	public static final String ROSTER_URL = "https://www.eecs.yorku.ca/~roumani/servers/4413/f18/Roster.cgi";
 
-	public Brain() {
-	}
-
 	public String doTime() {
 		ZonedDateTime currTime = ZonedDateTime.now();
-		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("E d MMM yyyy HH:mm:ss z");
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("E MMM d HH:mm:ss z yyyy");
 
 		String formattedTime = currTime.format(timeFormat);
 		return formattedTime;
-
 	}
 
 }
