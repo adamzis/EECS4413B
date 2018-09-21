@@ -40,7 +40,7 @@ public class TCP extends HttpServlet {
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
 				String html = "<html><body>";
-				html += "<p><a href=' Prime.do'>Back to Dashboard</a></p>";
+				html += "<p><a href=' Dash.do'>Back to Dashboard</a></p>";
 				html += "<p>Error " + e.getMessage() + "</p>";
 				out.write(html);
 			}
