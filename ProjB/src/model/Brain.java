@@ -5,6 +5,12 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -44,11 +50,33 @@ public class Brain {
 		clientOut.println("Prime " + digits);
 		String returnedPrime = clientIn.nextLine();
 
-
 		client.close();
 		clientIn.close();
 
 		return returnedPrime;
+	}
+
+	public String doDb(String itemNo) throws Exception {
+		Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+		Connection con = DriverManager.getConnection(DB_URL);
+		Statement s = con.createStatement();
+		s.executeUpdate("set schema roumani");
+
+		String query = "SELECT name, price FROM item WHERE number = ?";
+		PreparedStatement preS = con.prepareStatement(query);
+		preS.setString(1, itemNo);
+
+		ResultSet r = preS.executeQuery();
+		String result = "";
+		if (r.next()) {
+			result = "$" + r.getDouble("PRICE") + " - " + r.getString("NAME");
+		} else {
+			throw new Exception(itemNo + " not found!");
+		}
+		r.close();
+		s.close();
+		con.close();
+		return result;
 	}
 
 }
