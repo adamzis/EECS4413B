@@ -12,21 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 import model.Brain;
 
 /**
- * Servlet implementation class Prime
+ * Servlet implementation class TCP
  */
-@WebServlet("/Prime.do")
-public class Prime extends HttpServlet {
+@WebServlet("/Tcp.do")
+public class TCP extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("calc") == null) {
-			this.getServletContext().getRequestDispatcher("/Prime.html").forward(request, response);
+			request.getServletContext().getRequestDispatcher("/TCP.html").forward(request, response);
 		} else {
 			Brain model = new Brain();
 			try {
 				String primeDigits = request.getParameter("digits");
-				String prime = model.doPrime(Integer.parseInt(primeDigits));
+				String prime = model.doTCP(Integer.parseInt(primeDigits));
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
 
@@ -45,6 +45,7 @@ public class Prime extends HttpServlet {
 				out.write(html);
 			}
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

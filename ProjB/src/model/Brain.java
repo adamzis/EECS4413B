@@ -1,9 +1,14 @@
 package model;
 
+import java.io.IOException;
+import java.io.PrintStream;
 import java.math.BigInteger;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Brain {
 	public static final double BITS_PER_DIGIT = 3.0;
@@ -26,10 +31,24 @@ public class Brain {
 		int bitsToDec = (int) (BITS_PER_DIGIT * digits);
 
 		BigInteger bigPrime = BigInteger.probablePrime(bitsToDec, new Random());
-		long primeNum = bigPrime.longValue();
-		String prime = Long.toString(primeNum);
+		String prime = bigPrime.toString();
 
 		return prime;
+	}
+
+	public String doTCP(int digits) throws UnknownHostException, IOException {
+		Socket client = new Socket(TCP_SERVER, TCP_PORT);
+		PrintStream clientOut = new PrintStream(client.getOutputStream());
+		Scanner clientIn = new Scanner(client.getInputStream());
+
+		clientOut.println("Prime " + digits);
+		String returnedPrime = clientIn.nextLine();
+
+
+		client.close();
+		clientIn.close();
+
+		return returnedPrime;
 	}
 
 }
