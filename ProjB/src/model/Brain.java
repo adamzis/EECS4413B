@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -75,8 +77,35 @@ public class Brain {
 		}
 		r.close();
 		s.close();
+		preS.close();
 		con.close();
 		return result;
 	}
+	
+	public String doHttp(String country, String query) throws Exception {
+		
+		StringBuilder queryURLBuild = new StringBuilder();
+		queryURLBuild.append(HTTP_URL);
+		queryURLBuild.append("?");
+		queryURLBuild.append("country=");
+		queryURLBuild.append(country);
+		queryURLBuild.append("&");
+		queryURLBuild.append("query=");
+		queryURLBuild.append(query);
+		
+		String queryURL = queryURLBuild.toString();
+		System.out.println(queryURL);
+		
+		URL serverURL = new URL(queryURL);
+		URLConnection httpConnection = serverURL.openConnection();
+		
+		Scanner httpInput = new Scanner(httpConnection.getInputStream());
+		String result = httpInput.nextLine();
+		
+		httpInput.close();
+		
+		return result;
+	}
+	
 
 }
