@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
@@ -81,31 +82,50 @@ public class Brain {
 		con.close();
 		return result;
 	}
-	
-	public String doHttp(String country, String query) throws Exception {
-		
-		StringBuilder queryURLBuild = new StringBuilder();
-		queryURLBuild.append(HTTP_URL);
+
+	public String doHttp(String country, String query) throws IOException {
+
+		StringBuilder queryURLBuild = new StringBuilder(HTTP_URL);
 		queryURLBuild.append("?");
 		queryURLBuild.append("country=");
 		queryURLBuild.append(country);
 		queryURLBuild.append("&");
 		queryURLBuild.append("query=");
 		queryURLBuild.append(query);
-		
+
 		String queryURL = queryURLBuild.toString();
-		System.out.println(queryURL);
-		
-		URL serverURL = new URL(queryURL);
-		URLConnection httpConnection = serverURL.openConnection();
-		
+
+		URL httpURL = new URL(queryURL);
+		URLConnection httpConnection = httpURL.openConnection();
+
 		Scanner httpInput = new Scanner(httpConnection.getInputStream());
 		String result = httpInput.nextLine();
-		
+
 		httpInput.close();
-		
+
 		return result;
 	}
-	
+
+	public String doRoster(String course) throws IOException {
+
+		StringBuilder rosterURLBuild = new StringBuilder(ROSTER_URL);
+		rosterURLBuild.append("?");
+		rosterURLBuild.append("course=");
+		rosterURLBuild.append(course);
+
+		String rosterURLString = rosterURLBuild.toString();
+
+		URL rosterURL = new URL(rosterURLString);
+		URLConnection rosterConnection = rosterURL.openConnection();
+
+		Scanner rosterInput = new Scanner(rosterConnection.getInputStream());
+		String rosterResult = rosterInput.nextLine();
+		
+		System.out.println(rosterResult);
+
+		rosterInput.close();
+
+		return rosterResult;
+	}
 
 }

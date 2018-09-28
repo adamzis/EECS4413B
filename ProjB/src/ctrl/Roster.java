@@ -12,31 +12,28 @@ import javax.servlet.http.HttpServletResponse;
 import model.Brain;
 
 /**
- * Servlet implementation class Http
+ * Servlet implementation class Roster
  */
-@WebServlet("/Http.do")
-public class Http extends HttpServlet {
+@WebServlet("/Roster.do")
+public class Roster extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		if (request.getParameter("query") == null || request.getParameter("country") == null
-				|| request.getParameter("calc") == null) {
-			request.getServletContext().getRequestDispatcher("/Http.html").forward(request, response);
+		if (request.getParameter("calc") == null) {
+			this.getServletContext().getRequestDispatcher("/Roster.html").forward(request, response);
 		} else {
 			Brain model = new Brain();
-
 			try {
-				String query = request.getParameter("query");
-				String country = request.getParameter("country");
-				String returnedValue = model.doHttp(country, query);
+				String course = request.getParameter("course");
+				String xml = model.doRoster(course);
 
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
+
 				String html = "<html lang=\"en\"><body>";
 				html += "<p><a href='Dash.do'>Back to Dashboard</a></p>";
-				html += "<p><strong>Country Data:</strong><br><code>" + returnedValue + "</code></p>";
+				html += "<p>Roster: " + xml + "</p>";
 				html += "</body></html>";
 
 				out.write(html);
@@ -53,7 +50,6 @@ public class Http extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		doGet(request, response);
 	}
 
