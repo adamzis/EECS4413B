@@ -20,31 +20,9 @@ public class Dash extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getParameter("calc") == null) {
-			this.getServletContext().getRequestDispatcher("/Prime.html").forward(request, response);
-		} else {
-			Brain model = new Brain();
-			try {
-				String primeDigits = request.getParameter("digits");
-				String prime = model.doPrime(Integer.parseInt(primeDigits));
-				response.setContentType("text/html");
-				Writer out = response.getWriter();
 
-				String html = "<html lang=\"en\"><body>";
-				html += "<p><a href='Dash.do'>Back to Dashboard</a></p>";
-				html += "<p>Prime: " + prime + "</p>";
-				html += "</body></html>";
+		this.getServletContext().getRequestDispatcher("/Dash.html").forward(request, response);
 
-				out.write(html);
-			} catch (Exception e) {
-				response.setContentType("text/html");
-				Writer out = response.getWriter();
-				String html = "<html><body>";
-				html += "<p><a href=' Dash.do'>Back to Dashboard</a></p>";
-				html += "<p>Error " + e.getMessage() + "</p>";
-				out.write(html);
-			}
-		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

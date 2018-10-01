@@ -1,7 +1,9 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -16,8 +18,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+
+import rosterXml.Course;
+import rosterXml.Students;
 
 public class Brain {
 	public static final double BITS_PER_DIGIT = 3.0;
@@ -119,13 +137,39 @@ public class Brain {
 		URLConnection rosterConnection = rosterURL.openConnection();
 
 		Scanner rosterInput = new Scanner(rosterConnection.getInputStream());
-		String rosterResult = rosterInput.nextLine();
-		
-		System.out.println(rosterResult);
+		String xml = rosterInput.nextLine();
 
-		rosterInput.close();
+		System.out.println(xml);
 
-		return rosterResult;
+		Course roster = null;
+		try {
+			roster = XMLtoHTML(xml);
+		} catch (JAXBException e) {
+			return "Error";
+		} finally {
+			rosterInput.close();
+		}
+
+		return xml;
+	}
+
+	private Course XMLtoHTML(String xml) throws JAXBException {
+
+		JAXBContext jc = JAXBContext.newInstance(Course.class);
+		Unmarshaller unmarshaller = jc.createUnmarshaller();
+
+		StringReader reader = new StringReader(xml);
+
+		Course theCourse = (Course) unmarshaller.unmarshal(reader);
+
+		return theCourse;
+
+	}
+
+	private String makeRosterTable(Course roster) {
+		StringBuilder htmlTableBuild = new StringBuilder("<table>");
+
+		return htmlTableBuild.toString();
 	}
 
 }
