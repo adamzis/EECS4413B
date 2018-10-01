@@ -30,7 +30,7 @@ public class TCP extends HttpServlet {
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
 
-				String html = "<html lang=\"en\"><body>";
+				String html = "<!DOCTYPE html><html lang=\"en\"><body>";
 				html += "<p><a href='Dash.do'>Back to Dashboard</a></p>";
 				html += "<p>Prime: " + prime + "</p>";
 				html += "</body></html>";
@@ -39,7 +39,7 @@ public class TCP extends HttpServlet {
 			} catch (Exception e) {
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
-				String html = "<html><body>";
+				String html = "<!DOCTYPE html><html><body>";
 				html += "<p><a href=' Dash.do'>Back to Dashboard</a></p>";
 				html += "<p>Error " + e.getMessage() + "</p>";
 				out.write(html);

@@ -150,7 +150,8 @@ public class Brain {
 			rosterInput.close();
 		}
 
-		return xml;
+		String htmlTable = makeRosterTable(roster);
+		return htmlTable;
 	}
 
 	private Course XMLtoHTML(String xml) throws JAXBException {
@@ -167,8 +168,26 @@ public class Brain {
 	}
 
 	private String makeRosterTable(Course roster) {
-		StringBuilder htmlTableBuild = new StringBuilder("<table>");
+		StringBuilder htmlTableBuild = new StringBuilder("<table border=\"1\">");
+		htmlTableBuild.append("<tr><th>Course ID</th><td colspan=\"3\">" + roster.getNumber() + "</td>");
+		htmlTableBuild.append("<th>Status</th><td colspan=\"2\">" + roster.getStatus() + "</td></tr>");
 
+		List<Students> classStudents = roster.getStudents();
+
+		htmlTableBuild.append("<tr><th>ID</th>" + "<th>Last Name</th>" + "<th>First Name</th>" + "<th>City</th>"
+				+ "<th>Program</th>" + "<th>Hours</th>" + "<th>GPA</th></tr>");
+
+		for (Students student : classStudents) {
+			htmlTableBuild.append("<tr><td>" + student.getId() + "</td>");
+			htmlTableBuild.append("<td>" + student.getLastName() + "</td>");
+			htmlTableBuild.append("<td>" + student.getFirstName() + "</td>");
+			htmlTableBuild.append("<td>" + student.getCity() + "</td>");
+			htmlTableBuild.append("<td>" + student.getProgram() + "</td>");
+			htmlTableBuild.append("<td>" + student.getHours() + "</td>");
+			htmlTableBuild.append("<td>" + student.getGpa() + "</td></tr>");
+		}
+
+		htmlTableBuild.append("</table>");
 		return htmlTableBuild.toString();
 	}
 

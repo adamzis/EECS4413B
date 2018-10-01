@@ -28,7 +28,7 @@ public class Time extends HttpServlet {
 				String time = model.doTime();
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
-				String html = "<html><body>";
+				String html = "<!DOCTYPE html><html><body>";
 				html += "<p><a href='Dash.do'>Back to Dashboard</a></p>";
 				html += "<p>Server Time: " + time + "</p>";
 				html += "</body></html>";
@@ -36,7 +36,7 @@ public class Time extends HttpServlet {
 			} catch (Exception e) {
 				response.setContentType("text/html");
 				Writer out = response.getWriter();
-				String html = "<html><body>";
+				String html = "<!DOCTYPE html><html><body>";
 				html += "<p><a href=' Dash.do'>Back to Dashboard</a></p>";
 				html += "<p>Error " + e.getMessage() + "</p>";
 				out.write(html);
