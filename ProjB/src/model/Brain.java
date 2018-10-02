@@ -1,11 +1,9 @@
 package model;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
@@ -14,7 +12,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,18 +19,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-
 import rosterXml.Course;
 import rosterXml.Students;
 
@@ -73,6 +61,7 @@ public class Brain {
 
 		client.close();
 		clientIn.close();
+		clientOut.close();
 
 		return returnedPrime;
 	}
@@ -94,10 +83,12 @@ public class Brain {
 		} else {
 			throw new Exception(itemNo + " not found!");
 		}
+
 		r.close();
 		s.close();
 		preS.close();
 		con.close();
+
 		return result;
 	}
 
@@ -145,13 +136,12 @@ public class Brain {
 		try {
 			roster = XMLtoHTML(xml);
 		} catch (JAXBException e) {
-			return "Error";
+			return "XML Conversion Error";
 		} finally {
 			rosterInput.close();
 		}
 
-		String htmlTable = makeRosterTable(roster);
-		return htmlTable;
+		return makeRosterTable(roster);
 	}
 
 	private Course XMLtoHTML(String xml) throws JAXBException {
